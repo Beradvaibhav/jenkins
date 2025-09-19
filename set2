@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Variables
+BUILD_DIR=$WORKSPACE/target
+VERSIONS_DIR=$WORKSPACE/versions
+PROJECT_NAME="myproject"
+BUILD_ID=${BUILD_NUMBER}
+TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+
+# Create versions directory if it doesn't exist
+mkdir -p "$VERSIONS_DIR"
+
+# Locate the JAR file
+ARTIFACT_FILE=$(find "$BUILD_DIR" -name "*.jar" | head -n 1)
+
+if [ -f "$ARTIFACT_FILE" ]; then
+    # Create versioned filename
+    VERSIONED_NAME="${PROJECT_NAME}-${BUILD_ID}-${TIMESTAMP}.jar"
+
+    # Copy and rename the JAR file
+    cp "$ARTIFACT_FILE" "$VERSIONS_DIR/$VERSIONED_NAME"
+
+    echo "Artifact saved as: $VERSIONS_DIR/$VERSIONED_NAME"
+else
+    echo "ERROR: No JAR file found in $BUILD_DIR"
+    exit 1
+fi
