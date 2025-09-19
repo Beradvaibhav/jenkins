@@ -1,27 +1,44 @@
-#!/bin/bash
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         
+    <modelVersion>4.0.0</modelVersion>
 
-# Variables
-BUILD_DIR=$WORKSPACE/target
-VERSIONS_DIR=$WORKSPACE/versions
-PROJECT_NAME="myproject"
-BUILD_ID=${BUILD_NUMBER}
-TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+    <groupId>com.example</groupId>
+    <artifactId>myproject</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
-# Create versions directory if it doesn't exist
-mkdir -p "$VERSIONS_DIR"
+    <name>My Sample Project</name>
 
-# Locate the JAR file
-ARTIFACT_FILE=$(find "$BUILD_DIR" -name "*.jar" | head -n 1)
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
 
-if [ -f "$ARTIFACT_FILE" ]; then
-    # Create versioned filename
-    VERSIONED_NAME="${PROJECT_NAME}-${BUILD_ID}-${TIMESTAMP}.jar"
+    <dependencies>
+        <!-- Example dependency -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
-    # Copy and rename the JAR file
-    cp "$ARTIFACT_FILE" "$VERSIONS_DIR/$VERSIONED_NAME"
-
-    echo "Artifact saved as: $VERSIONS_DIR/$VERSIONED_NAME"
-else
-    echo "ERROR: No JAR file found in $BUILD_DIR"
-    exit 1
-fi
+    <build>
+        <plugins>
+            <!-- Compiler plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
